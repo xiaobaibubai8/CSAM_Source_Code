@@ -47,7 +47,6 @@ Use the following commands to test the model
 ```bash
 python train.py -batch_size 32 -num_epoch 100 -emb_size 128 -hidden_dim 256 -pool_size 2000 -loss_type cos -pool_size 2000 -test -test_model_path ./saved_model/model1/best_model.bin
 ```
-> ./saved_model/model2/record.log
 
 
 ## baseline models
