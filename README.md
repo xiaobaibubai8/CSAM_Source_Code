@@ -56,7 +56,6 @@ The rest of the model code can be referred to in the link.
 [baseline code](https://gitee.com/weicc214/code_graph_nn_pyg)
 
 
-nohup python train.py -batch_size 32 -num_epoch 100 -emb_size 128 -hidden_dim 256 -pool_size 2000 -loss_type cos -pool_size 2000 -test -test_model_path ./saved_model/model2/best_model.bin > ./saved_model/model2/record_test2.log &
 
 
 
