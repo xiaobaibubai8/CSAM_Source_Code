@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ## Dataset
 
 We use the CodeSearchNet dataset, and the preprocessed dataset can be accessed via the cloud drive 
-(link)
+[preprocessed dataset](https://drive.google.com/drive/folders/1I1qpoiYJuZo0TBneHIVaCX4e9en_KEd1)
 
 If you want to quickly start training/testing the model, you can directly obtain ther pocessed data files preprocessed_train/valid/text.bin and place them in the /NCFG-CS_Source_Code/NCFG-CS/preprocessed_data/CSN/train(/valid/test)/processed folder.
 
