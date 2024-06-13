@@ -1,25 +1,32 @@
 import argparse
+import os
+import sys
 import os.path
 from tqdm import tqdm
 from torch.optim.lr_scheduler import LambdaLR
 import torch
 import torch.nn.functional as F
 from torch.nn import MarginRankingLoss, CrossEntropyLoss
+# 获取当前文件所在目录的绝对路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 将当前目录路径添加到 sys.path 的开头
+sys.path.insert(0, current_dir)
 from data.CodeSearchNetDataSet import CodeSearchNetDataSet
 from losses import CosineLoss
 from model.GCNfusion import GCNfusion
 from data.DataLoader import DataLoader
+
 import random
 import numpy as np
 import math
 # seed all
-from model.GCNfusion import GCNfusion
 
 seed = 123456
 random.seed(seed)
 torch.random.manual_seed(seed)
 np.random.seed(seed)
-device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:3' if torch.cuda.is_available() else 'cpu'
 
 def train(run_args):
     # get the command params
@@ -29,11 +36,13 @@ def train(run_args):
     hidden_dim = int(run_args.hidden_dim)
     pool_size = int(run_args.pool_size)
     
+    current_dir = os.path.dirname(__file__)
+     
     # data preprocessing 
     train_dataset = CodeSearchNetDataSet(
-        '../NCFG-CS/preprocessed_data/train', 'train')
+        os.path.join(current_dir, 'preprocessed_data/CSN/train'), 'train')
     valid_dataset = CodeSearchNetDataSet(
-        '../NCFG-CS/preprocessed_data/valid', 'valid')
+        os.path.join(current_dir, 'preprocessed_data/CSN/valid'), 'valid')
     
     # load the data
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True, collate_fn=True)
@@ -239,7 +248,7 @@ def test(run_args):
     hidden_dim = int(run_args.hidden_dim)
 
     # set data preprocessing and model
-    test_dataset = CodeSearchNetDataSet('../NCFG-CS/preprocessed_data/test', 'test')
+    test_dataset = CodeSearchNetDataSet(os.path.join(current_dir, 'preprocessed_data/CSN/test'), 'test')
     model = GCNfusion(device=device, embedding_size=emb_size, hidden_dim=hidden_dim)
     
     print("test set size：", len(test_dataset))

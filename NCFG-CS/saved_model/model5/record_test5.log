@@ -1,0 +1,13 @@
+start training ！
+params setting
+ Namespace(batch_size=32, emb_size=128, hidden_dim=256, loss_type='cos', num_epoch=100, pool_size=2000, saved_model_dir=None, test=True, test_model_path='./saved_model/model5/best_model.bin', train=False, use_desc_lstm=False)
+从/home/pengwenliang/NCFG-CS_Source_Code/NCFG-CS/preprocessed_data/CSN/test/processed/proprecessed_test.binload data...
+test set size： 21536
+top 1:
+ {'acc': 0.58705, 'mrr': 0.58705, 'map': 0.58705, 'ndcg': 0.58705}
+top 5:
+ {'acc': 0.80295, 'mrr': 0.6695533333333333, 'map': 0.6695533333333333, 'ndcg': 0.7029851166538751}
+top 10:
+ {'acc': 0.86415, 'mrr': 0.6772409126984127, 'map': 0.6772409126984127, 'ndcg': 0.7224391891861675}
+top 100:
+ {'acc': 0.9517, 'mrr': 0.6819654711976285, 'map': 0.6819654711976285, 'ndcg': 0.7419642020924327}

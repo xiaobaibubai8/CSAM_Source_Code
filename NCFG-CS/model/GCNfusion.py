@@ -4,13 +4,14 @@ import torch.nn.functional as F
 import fasttext
 import numpy as np
 from torch_geometric.nn import GCNConv, GlobalAttention, TransformerConv
+
 from pooling1d import pooling1d
 from torch_geometric.utils import add_self_loops
 
 class GCNfusion(nn.Module):
 
     def __init__(self, pool_type='mean', code_vocab_size=10000, desc_vocab_size=10000,
-                 embedding_size=128, hidden_dim=256, device='cuda:0', node_aggr='global_attn'):
+                 embedding_size=128, hidden_dim=256, device='cuda:3', node_aggr='global_attn'):
         super(GCNfusion, self).__init__()
         # code word embedding
         self.code_word_embedding = nn.Embedding(code_vocab_size, embedding_size)
@@ -72,7 +73,6 @@ class GCNfusion(nn.Module):
         
         #【CFG_num, embedding_size】
         stmt_embedding = self.code_word_embedding2(outer_stmt_features)
-       
         tokens_mask = (outer_stmt_features.ne(self.code_pad_id)).to(self.device)
         batch_code_lens = torch.sum(outer_stmt_features != self.code_pad_id, dim=-1).to(self.device)
         stmt_embedding = self.pooling(input_emb=stmt_embedding, input_mask=tokens_mask, input_len=batch_code_lens)
@@ -90,14 +90,14 @@ class GCNfusion(nn.Module):
         mini_function_repr = self.node_global_attention(mini_stmt_hidden, mini_x_batch)
        
         # fuse statement text feature and structure feature
-        mini_function_repr = (mini_function_repr + stmt_embedding) / 2
-        
+        # mini_function_repr = (mini_function_repr + stmt_embedding) / 2
+        mini_function_repr = stmt_embedding
         # set two layers
         final_stmt = self.conv2(mini_function_repr, edge_index)
         # relu for GCN
         final_stmt = F.relu(final_stmt)
         final_stmt = self.conv3(final_stmt, edge_index)
-        
+
         if self.node_aggr == 'global_attn':
             function_repr = self.node_global_attention(final_stmt, batch_graphs.batch)
         else:

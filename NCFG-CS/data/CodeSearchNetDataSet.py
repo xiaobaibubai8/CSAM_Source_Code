@@ -6,6 +6,7 @@ import re
 import json
 from data.tokenization_util import camel_and_snake_to_word_list, load_stopwords
 from torch_geometric.data import Dataset, Data
+
 import random
 from spacy.lang.en.stop_words import STOP_WORDS
 class CodeSearchNetDataSet(Dataset):
@@ -154,11 +155,12 @@ class CodeSearchNetDataSet(Dataset):
     def processed_file_names(self):
         processed_file_name_list = []
         if self.split_name == 'train':
-            processed_file_name_list.append('proprecessed_train.bin')
+            processed_file_name_list.append('proprecessed_train2.bin')
+            print(f'这是处理后的数据集长度{processed_file_name_list}')
         elif self.split_name == 'valid':
-            processed_file_name_list.append('proprecessed_valid.bin')
+            processed_file_name_list.append('proprecessed_valid2.bin')
         elif self.split_name == 'test':
-            processed_file_name_list.append('proprecessed_test.bin')
+            processed_file_name_list.append('proprecessed_test2.bin')
         else:
             raise NotImplementedError('do not exist the partition')
         return processed_file_name_list
@@ -272,7 +274,8 @@ class CodeSearchNetDataSet(Dataset):
                      'descriptions': self.descriptions,
                      'descriptions_lens': self.descriptions_lens,
                     }
-        save_path = os.path.join(self.root, f'proprecessed_{self.split_name}.bin')
+        print(f'root 的 路径是：{self.root}')
+        save_path = os.path.join(self.root, f'processed/proprecessed_{self.split_name}2.bin')
         torch.save(save_dict, save_path)
         print(f'Saved dataset to {str(save_path)}')
 
@@ -527,7 +530,7 @@ class CodeSearchNetDataSet(Dataset):
 
 
 if __name__ == '__main__':
-    valid_set = CodeSearchNetDataSet('../NCFG-CS/proprecessed_data/valid', 'valid')
+    valid_set = CodeSearchNetDataSet('../NCFG-CS/proprecessed_data/CSN/valid', 'valid')
     print('valid set size：', len(valid_set))
     for i in range(5):
         print(valid_set[i])
